@@ -1,0 +1,27 @@
+{
+	"name": "openfl-tiled-flixel",
+	"url": "https://github.com/Kasoki/openfl-tiled-flixel",
+	"license": "MIT",
+	"tags": [
+		"game",
+		"openfl",
+		"cross",
+		"tile",
+		"map",
+		"tilemap",
+		"tiled",
+		"flash",
+		"tilesheet"
+	],
+	"description": "Glue to use openfl-tiled with HaxeFlixel",
+	"version": "0.0.1",
+	"releasenote": "inital release",
+	"contributors": [
+		"kasoki"
+	],
+	"dependencies": {
+		"openfl": "",
+		"flixel": "",
+		"openfl-tiled": ""
+	}
+}
