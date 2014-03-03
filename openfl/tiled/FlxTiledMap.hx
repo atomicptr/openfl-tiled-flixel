@@ -51,17 +51,23 @@ class FlxTiledMap extends FlxGroup {
 									position = new Point((this.map.width + x - y - 1) * this.map.tileWidth * 0.5, (y + x) * this.map.tileHeight * 0.5);
 							}
 
-							var tileset = this.map.getTilesetByGID(nextGID);
-							var rect = tileset.getTileRectByGID(nextGID);
-							var texture = tileset.image.texture;
+							var tileset:Tileset = this.map.getTilesetByGID(nextGID);
+							var rect:Rectangle = tileset.getTileRectByGID(nextGID);
+							var texture:BitmapData = tileset.image.texture;
 
 							var sprite:FlxSprite = new FlxSprite();
-							sprite.makeGraphic(this.map.tileWidth, this.map.tileHeight, FlxColor.TRANSPARENT);
 
 							sprite.x = position.x;
 							sprite.y = position.y;
 
-							sprite.pixels.copyPixels(texture, rect, new Point(0, 0), null, null, true);
+							sprite.solid = true;
+							sprite.immovable = true;
+
+							var bitmapData:BitmapData = new BitmapData(32, 32, true);
+
+							bitmapData.copyPixels(texture, rect, new Point(0, 0), null, null, true);
+
+							sprite.pixels = bitmapData;
 
 							layerGroup.add(sprite);
 						}
@@ -74,7 +80,7 @@ class FlxTiledMap extends FlxGroup {
 			this.layers.push(layerGroup);
 		}
 
-		// add FlxGroup layers to map
+		// add FlxGroup-layers to map
 		for(layer in this.layers) {
 			this.add(layer);
 		}
