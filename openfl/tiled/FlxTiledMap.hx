@@ -37,6 +37,11 @@ class FlxTiledMap extends FlxGroup {
 
 	public var layers:Array<FlxLayer>;
 
+	public var totalWidth(get, null):Int;
+	public var totalHeight(get, null):Int;
+	public var widthInTiles(get, null):Int;
+	public var heightInTiles(get, null):Int;
+
 	private var _tileCache:Map<Int, BitmapData>;
 
 	private function new(map:TiledMap) {
@@ -60,7 +65,9 @@ class FlxTiledMap extends FlxGroup {
 			if(layer.visible) {
 				for(y in 0...this._map.heightInTiles) {
 					for(x in 0...this._map.widthInTiles) {
-						var nextGID = layer.tiles[gidCounter].gid;
+						var tile = layer.tiles[gidCounter];
+
+						var nextGID = tile.gid;
 
 						if(nextGID != 0) {
 							var position:Point = new Point();
@@ -73,8 +80,6 @@ class FlxTiledMap extends FlxGroup {
 							}
 
 							var bitmapData:BitmapData;
-
-							var sprite:FlxSprite = new FlxSprite();
 
 							if(!this._tileCache.exists(nextGID)) {
 								var tileset:Tileset = this._map.getTilesetByGID(nextGID);
@@ -90,16 +95,12 @@ class FlxTiledMap extends FlxGroup {
 								bitmapData = this._tileCache.get(nextGID);
 							}
 
-							sprite.x = position.x;
-							sprite.y = position.y;
+							var flxTile:FlxTile = new FlxTile(tile, bitmapData);
 
-							sprite.solid = true;
-							sprite.immovable = true;
-							sprite.active = false;
+							flxTile.x = position.x;
+							flxTile.y = position.y;
 
-							sprite.pixels = bitmapData;
-
-							flxLayer.add(sprite);
+							flxLayer.add(flxTile);
 						}
 
 						gidCounter++;
@@ -124,6 +125,22 @@ class FlxTiledMap extends FlxGroup {
 		}
 
 		return null;
+	}
+
+	private function get_totalWidth():Int {
+		return this._map.totalWidth;
+	}
+
+	private function get_totalHeight():Int {
+		return this._map.totalHeight;
+	}
+
+	private function get_widthInTiles():Int {
+		return this._map.widthInTiles;
+	}
+
+	private function get_heightInTiles():Int {
+		return this._map.heightInTiles;
 	}
 
 	public static function fromAssets(path:String):FlxTiledMap {

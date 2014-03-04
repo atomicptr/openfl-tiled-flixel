@@ -21,39 +21,27 @@
 // THE SOFTWARE.
 package openfl.tiled;
 
+import flash.display.BitmapData;
+
 import flixel.FlxG;
-import flixel.FlxBasic;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
+import flixel.util.FlxRect;
 
-import openfl.tiled.Layer;
+import openfl.tiled.Tile;
 
-class FlxLayer extends FlxGroup {
+class FlxTile extends FlxSprite {
 
-	public var _layer:Layer;
-	public var isActive(default, null):Bool;
+	private var _tile:Tile;
 
-	public function new(tiledLayer:Layer) {
+	public function new(tile:Tile, bitmapData:BitmapData) {
 		super();
 
-		this._layer = tiledLayer;
+		this._tile = tile;
+		this.pixels = bitmapData;
 
-		this.isActive = false;
-	}
-
-	public function setActive(active:Bool) {
-		this.isActive = active;
-
-		updateTiles();
-	}
-
-	private function updateTiles() {
-		var layer:FlxLayer = this;
-
-		this.forEach(function(basic:FlxBasic) {
-			var tile:FlxSprite = cast(basic, FlxSprite);
-
-			tile.active = layer.isActive;
-		});
+		this.solid = true;
+		this.immovable = true;
+		this.active = false;
 	}
 }
