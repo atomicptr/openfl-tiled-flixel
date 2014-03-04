@@ -31,48 +31,44 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.util.FlxColor;
 
-import openfl.tiled.TiledMap;
-import openfl.tiled.Tileset;
-import openfl.tiled.TiledMapOrientation;
-
 class FlxTiledMap extends FlxGroup {
 
-	public var map(default, null):TiledMap;
+	public var _map(default, null):TiledMap;
 
-	public var layers:Array<FlxGroup>;
+	public var layers:Array<FlxLayer>;
 
 	private function new(map:TiledMap) {
 		super();
 
-		this.map = map;
-		this.layers = new Array<FlxGroup>();
+		this._map = map;
+		this.layers = new Array<FlxLayer>();
 
 		setup();
 	}
 
 	private function setup() {
 
-		for(layer in this.map.layers) {
+		for(layer in this._map.layers) {
 
 			var gidCounter:Int = 0;
-			var layerGroup:FlxGroup = new FlxGroup();
+			var flxLayer:FlxLayer = new FlxLayer(layer);
 
 			if(layer.visible) {
-				for(y in 0...this.map.heightInTiles) {
-					for(x in 0...this.map.widthInTiles) {
+				for(y in 0...this._map.heightInTiles) {
+					for(x in 0...this._map.widthInTiles) {
 						var nextGID = layer.tiles[gidCounter].gid;
 
 						if(nextGID != 0) {
 							var position:Point = new Point();
 
-							switch (this.map.orientation) {
+							switch (this._map.orientation) {
 								case TiledMapOrientation.Orthogonal:
-									position = new Point(x * this.map.tileWidth, y * this.map.tileHeight);
+									position = new Point(x * this._map.tileWidth, y * this._map.tileHeight);
 								case TiledMapOrientation.Isometric:
-									position = new Point((this.map.width + x - y - 1) * this.map.tileWidth * 0.5, (y + x) * this.map.tileHeight * 0.5);
+									position = new Point((this._map.width + x - y - 1) * this._map.tileWidth * 0.5, (y + x) * this._map.tileHeight * 0.5);
 							}
 
-							var tileset:Tileset = this.map.getTilesetByGID(nextGID);
+							var tileset:Tileset = this._map.getTilesetByGID(nextGID);
 							var rect:Rectangle = tileset.getTileRectByGID(nextGID);
 							var texture:BitmapData = tileset.image.texture;
 
@@ -83,6 +79,7 @@ class FlxTiledMap extends FlxGroup {
 
 							sprite.solid = true;
 							sprite.immovable = true;
+							sprite.active = false;
 
 							var bitmapData:BitmapData = new BitmapData(32, 32, true);
 
@@ -90,7 +87,7 @@ class FlxTiledMap extends FlxGroup {
 
 							sprite.pixels = bitmapData;
 
-							layerGroup.add(sprite);
+							flxLayer.add(sprite);
 						}
 
 						gidCounter++;
@@ -98,13 +95,23 @@ class FlxTiledMap extends FlxGroup {
 				}
 			}
 
-			this.layers.push(layerGroup);
+			this.layers.push(flxLayer);
 		}
 
-		// add FlxGroup-layers to map
+		// add FlxLayer to map
 		for(layer in this.layers) {
 			this.add(layer);
 		}
+	}
+
+	public function getLayerByName(name:String):FlxLayer {
+		for(layer in this.layers) {
+			if(layer._layer.name == name) {
+				return layer;
+			}
+		}
+
+		return null;
 	}
 
 	public static function fromAssets(path:String):FlxTiledMap {
