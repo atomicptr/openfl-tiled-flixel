@@ -14,8 +14,8 @@
 		"tilesheet"
 	],
 	"description": "Glue to use openfl-tiled with HaxeFlixel",
-	"version": "0.0.1",
-	"releasenote": "inital release",
+	"version": "0.0.2",
+	"releasenote": "high performance improvement, add FlxLayer for collison detection",
 	"contributors": [
 		"kasoki"
 	],
