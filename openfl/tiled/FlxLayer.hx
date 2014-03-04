@@ -51,7 +51,7 @@ class FlxLayer extends FlxGroup {
 		var layer:FlxLayer = this;
 
 		this.forEach(function(basic:FlxBasic) {
-			var tile:FlxSprite = cast(basic, FlxSprite);
+			var tile:FlxTile = cast(basic, FlxTile);
 
 			tile.active = layer.isActive;
 		});

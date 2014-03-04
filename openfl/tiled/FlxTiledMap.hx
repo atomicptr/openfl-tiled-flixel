@@ -86,9 +86,9 @@ class FlxTiledMap extends FlxGroup {
 								var rect:Rectangle = tileset.getTileRectByGID(nextGID);
 								var texture:BitmapData = tileset.image.texture;
 
-								bitmapData = new BitmapData(32, 32, true);
+								bitmapData = new BitmapData(32, 32, true, this._map.backgroundColor);
 
-								bitmapData.copyPixels(texture, rect, new Point(0, 0), null, null, true);
+								bitmapData.copyPixels(texture, rect, new Point(0, 0));
 
 								this._tileCache.set(nextGID, bitmapData);
 							} else {
@@ -108,6 +108,7 @@ class FlxTiledMap extends FlxGroup {
 				}
 			}
 
+			flxLayer.setAll("alpha", layer.opacity);
 			this.layers.push(flxLayer);
 		}
 
