@@ -37,11 +37,15 @@ class FlxTiledMap extends FlxGroup {
 
 	public var layers:Array<FlxLayer>;
 
+	private var _tileCache:Map<Int, BitmapData>;
+
 	private function new(map:TiledMap) {
 		super();
 
 		this._map = map;
 		this.layers = new Array<FlxLayer>();
+
+		this._tileCache = new Map<Int, BitmapData>();
 
 		setup();
 	}
@@ -68,11 +72,23 @@ class FlxTiledMap extends FlxGroup {
 									position = new Point((this._map.width + x - y - 1) * this._map.tileWidth * 0.5, (y + x) * this._map.tileHeight * 0.5);
 							}
 
-							var tileset:Tileset = this._map.getTilesetByGID(nextGID);
-							var rect:Rectangle = tileset.getTileRectByGID(nextGID);
-							var texture:BitmapData = tileset.image.texture;
+							var bitmapData:BitmapData;
 
 							var sprite:FlxSprite = new FlxSprite();
+
+							if(!this._tileCache.exists(nextGID)) {
+								var tileset:Tileset = this._map.getTilesetByGID(nextGID);
+								var rect:Rectangle = tileset.getTileRectByGID(nextGID);
+								var texture:BitmapData = tileset.image.texture;
+
+								bitmapData = new BitmapData(32, 32, true);
+
+								bitmapData.copyPixels(texture, rect, new Point(0, 0), null, null, true);
+
+								this._tileCache.set(nextGID, bitmapData);
+							} else {
+								bitmapData = this._tileCache.get(nextGID);
+							}
 
 							sprite.x = position.x;
 							sprite.y = position.y;
@@ -80,10 +96,6 @@ class FlxTiledMap extends FlxGroup {
 							sprite.solid = true;
 							sprite.immovable = true;
 							sprite.active = false;
-
-							var bitmapData:BitmapData = new BitmapData(32, 32, true);
-
-							bitmapData.copyPixels(texture, rect, new Point(0, 0), null, null, true);
 
 							sprite.pixels = bitmapData;
 
