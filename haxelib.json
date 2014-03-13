@@ -8,14 +8,15 @@
 		"cross",
 		"tile",
 		"map",
+		"tmx",
 		"tilemap",
 		"tiled",
 		"flash",
-		"tilesheet"
+		"flixel"
 	],
-	"description": "Glue to use openfl-tiled with HaxeFlixel",
-	"version": "0.0.3",
-	"releasenote": "moar performance improvements, add FlxTile class, add some attributes from TiledMap to FlxTiledMap",
+	"description": "Experimental glue to use openfl-tiled with HaxeFlixel",
+	"version": "0.0.4",
+	"releasenote": "fix bug which caused transparent tiles to have a background",
 	"contributors": [
 		"kasoki"
 	],
