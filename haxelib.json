@@ -15,8 +15,8 @@
 		"flixel"
 	],
 	"description": "Experimental glue to use openfl-tiled with HaxeFlixel",
-	"version": "0.0.4",
-	"releasenote": "fix bug which caused transparent tiles to have a background",
+	"version": "0.0.5",
+	"releasenote": "fix bug which caused isometric maps to be not drawn properly",
 	"contributors": [
 		"kasoki"
 	],
