@@ -28,10 +28,10 @@ import flash.display.BitmapData;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
+import flixel.group.FlxTypedGroup;
 import flixel.util.FlxColor;
 
-class FlxTiledMap extends FlxGroup {
+class FlxTiledMap extends FlxTypedGroup<FlxLayer> {
 
 	public var _map(default, null):TiledMap;
 

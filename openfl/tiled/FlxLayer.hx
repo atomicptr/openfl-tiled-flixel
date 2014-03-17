@@ -24,11 +24,11 @@ package openfl.tiled;
 import flixel.FlxG;
 import flixel.FlxBasic;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
+import flixel.group.FlxTypedGroup;
 
 import openfl.tiled.Layer;
 
-class FlxLayer extends FlxGroup {
+class FlxLayer extends FlxTypedGroup<FlxTile> {
 
 	public var _layer:Layer;
 	public var isActive(default, null):Bool;
