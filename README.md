@@ -13,8 +13,7 @@ If you want to report issues please use the [openfl-tiled issue report](https://
 Please note that this package depends on openfl-tiled.
 
 	
-How to install the development version?
------------------------------
+### How to install the development version?
 
 To install the current development version you just need to run this in your terminal:
 
