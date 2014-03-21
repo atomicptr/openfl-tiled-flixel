@@ -4,6 +4,8 @@ import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
+import flixel.FlxSprite;
+
 import openfl.tiled.display.Renderer;
 
 class FlxEntityRenderer implements Renderer {
@@ -77,10 +79,21 @@ class FlxEntityRenderer implements Renderer {
 
 		flxLayer.setAll("alpha", layer.opacity);
 		on.layers.push(flxLayer);
+
+		// add layer to map
+		on.add(flxLayer);
 	}
 
 	public function drawImageLayer(on:Dynamic, imageLayer:ImageLayer):Void {
+		var sprite = new FlxSprite();
 
+		sprite.pixels = imageLayer.image.texture;
+		sprite.active = false;
+		sprite.immovable = true;
+
+		sprite.alpha = imageLayer.opacity;
+
+		on.add(sprite);
 	}
 
 	public function clear(on:Dynamic):Void {

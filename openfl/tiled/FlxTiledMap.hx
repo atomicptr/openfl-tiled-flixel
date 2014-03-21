@@ -31,6 +31,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxTypedGroup;
 import flixel.util.FlxColor;
 
+import openfl.tiled.display.Renderer;
 import openfl.tiled.display.FlxEntityRenderer;
 
 class FlxTiledMap extends FlxTypedGroup<FlxLayer> {
@@ -44,23 +45,26 @@ class FlxTiledMap extends FlxTypedGroup<FlxLayer> {
 	public var widthInTiles(get, null):Int;
 	public var heightInTiles(get, null):Int;
 
+	public var renderer(default, null):Renderer;
+
 	private function new(map:TiledMap) {
 		super();
 
 		this._map = map;
 		this.layers = new Array<FlxLayer>();
 
+		this.renderer = this._map.renderer;
+
 		setup();
 	}
 
 	private function setup() {
 		for(layer in this._map.layers) {
-			this._map.renderer.drawLayer(this, layer);
+			renderer.drawLayer(this, layer);
 		}
 
-		// add FlxLayer to map
-		for(layer in this.layers) {
-			this.add(layer);
+		for(imageLayer in this._map.imageLayers) {
+			renderer.drawImageLayer(this, imageLayer);
 		}
 	}
 
