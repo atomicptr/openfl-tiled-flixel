@@ -31,6 +31,8 @@ import flixel.FlxSprite;
 import flixel.group.FlxTypedGroup;
 import flixel.util.FlxColor;
 
+import openfl.tiled.display.FlxEntityRenderer;
+
 class FlxTiledMap extends FlxTypedGroup<FlxLayer> {
 
 	public var _map(default, null):TiledMap;
@@ -42,79 +44,18 @@ class FlxTiledMap extends FlxTypedGroup<FlxLayer> {
 	public var widthInTiles(get, null):Int;
 	public var heightInTiles(get, null):Int;
 
-	private var _tileCache:Map<Int, BitmapData>;
-
 	private function new(map:TiledMap) {
 		super();
 
 		this._map = map;
 		this.layers = new Array<FlxLayer>();
 
-		this._tileCache = new Map<Int, BitmapData>();
-
 		setup();
 	}
 
 	private function setup() {
-
 		for(layer in this._map.layers) {
-
-			var gidCounter:Int = 0;
-			var flxLayer:FlxLayer = new FlxLayer(layer);
-
-			if(layer.visible) {
-				for(y in 0...this._map.heightInTiles) {
-					for(x in 0...this._map.widthInTiles) {
-						var tile = layer.tiles[gidCounter];
-
-						var nextGID = tile.gid;
-
-						if(nextGID != 0) {
-							var position:Point = new Point();
-
-							switch (this._map.orientation) {
-								case TiledMapOrientation.Orthogonal:
-									position = new Point(x * this._map.tileWidth, y * this._map.tileHeight);
-								case TiledMapOrientation.Isometric:
-									position = new Point((this._map.width + x - y - 1) * this._map.tileWidth * 0.5, (y + x) * this._map.tileHeight * 0.5);
-							}
-
-							var bitmapData:BitmapData;
-
-							if(!this._tileCache.exists(nextGID)) {
-								var tileset:Tileset = this._map.getTilesetByGID(nextGID);
-								var rect:Rectangle = tileset.getTileRectByGID(nextGID);
-								var texture:BitmapData = tileset.image.texture;
-
-								bitmapData = new BitmapData(this._map.tileWidth, this._map.tileHeight,
-									true, this._map.backgroundColor);
-
-								bitmapData.copyPixels(texture, rect, new Point(0, 0));
-
-								this._tileCache.set(nextGID, bitmapData);
-							} else {
-								bitmapData = this._tileCache.get(nextGID);
-							}
-
-							if(this._map.orientation == TiledMapOrientation.Isometric) {
-								position.x += this.totalWidth/2;
-							}
-
-							var flxTile:FlxTile = new FlxTile(tile, bitmapData);
-
-							flxTile.x = position.x;
-							flxTile.y = position.y;
-
-							flxLayer.add(flxTile);
-						}
-
-						gidCounter++;
-					}
-				}
-			}
-
-			flxLayer.setAll("alpha", layer.opacity);
-			this.layers.push(flxLayer);
+			this._map.renderer.drawLayer(this, layer);
 		}
 
 		// add FlxLayer to map
@@ -150,7 +91,9 @@ class FlxTiledMap extends FlxTypedGroup<FlxLayer> {
 	}
 
 	public static function fromAssets(path:String):FlxTiledMap {
-		var map = TiledMap.fromAssets(path);
+		var renderer = new FlxEntityRenderer();
+
+		var map = TiledMap.fromAssetsWithAlternativeRenderer(path, renderer, false);
 
 		return new FlxTiledMap(map);
 	}
