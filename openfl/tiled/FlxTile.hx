@@ -26,7 +26,7 @@ import flash.display.BitmapData;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
-import flixel.util.FlxRect;
+import flixel.math.FlxRect;
 
 import openfl.tiled.Tile;
 
