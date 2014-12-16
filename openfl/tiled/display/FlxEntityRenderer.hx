@@ -76,10 +76,12 @@ class FlxEntityRenderer implements Renderer {
 				}
 			}
 		}
-
-		flxLayer.setAll("alpha", layer.opacity);
+		
+		// set alpha on each tile
+		flxLayer.forEach(function(flxTile:FlxTile):Void { flxTile.alpha = layer.opacity; });
+		
 		on.layers.push(flxLayer);
-
+		
 		// add layer to map
 		on.add(flxLayer);
 	}
